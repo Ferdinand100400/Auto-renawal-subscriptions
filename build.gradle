@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.1.12'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'ru.school21.intern'
+version = '0.0.1-SNAPSHOT'
+description = 'AutoRenewalSubscriptions'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+jar {
+    manifest {
+        attributes('Main-Class': 'ru.school21.intern.Main')
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.0.3'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
