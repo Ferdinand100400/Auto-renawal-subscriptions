@@ -3,7 +3,6 @@ package ru.school21.intern.web.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jdk.jshell.Snippet;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.school21.intern.domain.model.Category;
@@ -46,7 +45,7 @@ public interface ObligationController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Обязательства получены")
     })
-    ResponseEntity<?> getObligationByNextPaymentToRange(@RequestParam(value = "n", required = false) int n);
+    ResponseEntity<?> getObligationByNextPaymentToRange(@RequestParam(value = "n", required = false) Integer n);
 
     @PostMapping("/{id}/pay")
     @Operation(
@@ -68,7 +67,7 @@ public interface ObligationController {
             @ApiResponse(responseCode = "200", description = "Обязательство успешно отменено"),
             @ApiResponse(responseCode = "422", description = "Статус обязательства не активный")
     })
-    void cancelObligation(@PathVariable UUID id);
+    ResponseEntity<?> cancelObligation(@PathVariable UUID id);
 
     @DeleteMapping("/{id}")
     @Operation(

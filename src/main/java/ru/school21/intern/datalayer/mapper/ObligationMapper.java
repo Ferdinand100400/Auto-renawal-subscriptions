@@ -3,6 +3,7 @@ package ru.school21.intern.datalayer.mapper;
 import ru.school21.intern.datalayer.entity.Obligation;
 import ru.school21.intern.domain.model.ObligationDto;
 
+import java.util.Currency;
 import java.util.List;
 
 public class ObligationMapper {
@@ -11,7 +12,7 @@ public class ObligationMapper {
         return new Obligation(obligationDto.id(),
                 obligationDto.title(),
                 obligationDto.amount(),
-                obligationDto.currency(),
+                obligationDto.currency().getCurrencyCode(),
                 obligationDto.category(),
                 obligationDto.recurrence());
     }
@@ -20,10 +21,11 @@ public class ObligationMapper {
         return new ObligationDto(obligation.id(),
                 obligation.title(),
                 obligation.amount(),
-                obligation.currency(),
+                Currency.getInstance(obligation.currency()),
                 obligation.category(),
                 obligation.recurrence(),
                 obligation.nextPaymentDate(),
+                obligation.status(),
                 obligation.createdAt(),
                 obligation.updatedAt());
     }

@@ -1,6 +1,7 @@
 package ru.school21.intern.domain.service;
 
 import ru.school21.intern.datalayer.mapper.PaymentMapper;
+import ru.school21.intern.domain.model.ObligationDto;
 import ru.school21.intern.domain.model.PaymentDto;
 import ru.school21.intern.domain.repository.PaymentRepository;
 
@@ -14,9 +15,9 @@ public class PaymentService {
         this.paymentRepo = paymentRepo;
     }
 
-    public UUID createPay(PaymentDto paymentDto) {
-
-        return paymentRepo.createPayment(PaymentMapper.dtoToEntity(paymentDto));
+    public PaymentDto createPay(ObligationDto obligationDto) {
+        PaymentDto paymentDto = new PaymentDto(obligationDto.id(), obligationDto.amount(), obligationDto.currency());
+        return PaymentMapper.entityToDto(paymentRepo.createPayment(PaymentMapper.dtoToEntity(paymentDto)));
     }
 
     public void deleteByObligationId(UUID obligationId) {

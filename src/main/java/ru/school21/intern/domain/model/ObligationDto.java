@@ -2,22 +2,23 @@ package ru.school21.intern.domain.model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Currency;
 import java.util.Date;
 import java.util.UUID;
 
 public class ObligationDto {
 
-    private final UUID id;
+    private UUID id;
     private final String title;
     private final BigDecimal amount;
-    private final String currency;
+    private final Currency currency;
     private final Category category;
     private final Recurrence recurrence;
     private Date nextPaymentDate;
     private Status status;
     private Timestamp createdAt, updatedAt;
 
-    public ObligationDto(UUID id, String title, BigDecimal amount, String currency, Category category, Recurrence recurrence, Date nextPaymentDate, Timestamp createdAt, Timestamp updatedAt) {
+    public ObligationDto(UUID id, String title, BigDecimal amount, Currency currency, Category category, Recurrence recurrence, Date nextPaymentDate, Status status, Timestamp createdAt, Timestamp updatedAt) {
         this.id = id;
         this.title = title;
         this.amount = amount;
@@ -25,12 +26,12 @@ public class ObligationDto {
         this.category = category;
         this.recurrence = recurrence;
         this.nextPaymentDate = nextPaymentDate;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public ObligationDto(String title, BigDecimal amount, String currency, Category category, Recurrence recurrence, Date nextPaymentDate) {
-        id = UUID.randomUUID();
+    public ObligationDto(String title, BigDecimal amount, Currency currency, Category category, Recurrence recurrence, Date nextPaymentDate) {
         this.title = title;
         this.amount = amount;
         this.currency = currency;
@@ -51,7 +52,7 @@ public class ObligationDto {
         return amount;
     }
 
-    public String currency() {
+    public Currency currency() {
         return currency;
     }
 

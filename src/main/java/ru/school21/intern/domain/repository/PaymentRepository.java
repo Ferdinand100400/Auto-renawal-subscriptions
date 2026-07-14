@@ -9,7 +9,7 @@ import java.util.UUID;
 @Repository
 public interface PaymentRepository {
 
-    UUID createPayment(Payment payment);
+    Payment createPayment(Payment payment);
     List<Payment> findAllByObligationId(UUID obligationId);
     void deleteById(UUID id);
 }

@@ -3,17 +3,18 @@ package ru.school21.intern.domain.model;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Currency;
 import java.util.Date;
 import java.util.UUID;
 
 public class PaymentDto {
-    private final UUID id;
+    private UUID id;
     private final UUID obligation_id;
     private final BigDecimal amount;
-    private final String currency;
+    private final Currency currency;
     private final Timestamp paidAt;
 
-    public PaymentDto(UUID id, UUID obligation_id, BigDecimal amount, String currency, Timestamp paidAt) {
+    public PaymentDto(UUID id, UUID obligation_id, BigDecimal amount, Currency currency, Timestamp paidAt) {
         this.id = id;
         this.obligation_id = obligation_id;
         this.amount = amount;
@@ -21,8 +22,7 @@ public class PaymentDto {
         this.paidAt = paidAt;
     }
 
-    public PaymentDto(UUID obligation_id, BigDecimal amount, String currency) {
-        this.id = UUID.randomUUID();
+    public PaymentDto(UUID obligation_id, BigDecimal amount, Currency currency) {
         this.obligation_id = obligation_id;
         this.amount = amount;
         this.currency = currency;
@@ -41,7 +41,7 @@ public class PaymentDto {
         return amount;
     }
 
-    public String currency() {
+    public Currency currency() {
         return currency;
     }
 

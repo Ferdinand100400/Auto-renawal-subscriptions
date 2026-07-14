@@ -1,18 +1,27 @@
-package ru.school21.intern.datalayer.entity;
+package ru.school21.intern.web.model_web;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Currency;
 import java.util.UUID;
 
-public class Payment {
-
+public class PaymentDtoWeb {
     private final UUID id;
     private final UUID obligation_id;
-    private final BigDecimal amount;
-    private final String currency;
-    private Timestamp paidAt;
 
-    public Payment(UUID id, UUID obligation_id, BigDecimal amount, String currency, Timestamp paidAt) {
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private final BigDecimal amount;
+
+    private final Currency currency;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonProperty("paid_at")
+    private final Timestamp paidAt;
+
+    public PaymentDtoWeb(UUID id, UUID obligation_id, BigDecimal amount, Currency currency, Timestamp paidAt) {
         this.id = id;
         this.obligation_id = obligation_id;
         this.amount = amount;
@@ -32,15 +41,11 @@ public class Payment {
         return amount;
     }
 
-    public String currency() {
+    public Currency currency() {
         return currency;
     }
 
     public Timestamp paidAt() {
         return paidAt;
-    }
-
-    public void setPaidAt(Timestamp paidAt) {
-        this.paidAt = paidAt;
     }
 }

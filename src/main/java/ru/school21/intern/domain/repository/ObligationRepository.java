@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 public interface ObligationRepository {
 
-    void save(Obligation obligation);
+    Obligation save(Obligation obligation);
     List<Obligation> findAll();
     Optional<Obligation> findById(UUID id);
     Optional<Obligation> findActiveByTitle(String title);

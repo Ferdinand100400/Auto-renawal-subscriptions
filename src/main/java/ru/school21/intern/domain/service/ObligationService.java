@@ -2,21 +2,19 @@ package ru.school21.intern.domain.service;
 
 import org.springframework.stereotype.Service;
 import ru.school21.intern.datalayer.mapper.ObligationMapper;
-import ru.school21.intern.domain.exception.ActiveObligationWithTitleAlreadyExists;
-import ru.school21.intern.domain.exception.NotActiveStatusObligation;
-import ru.school21.intern.domain.exception.NotFindObligationById;
+import ru.school21.intern.exception.ActiveObligationWithTitleAlreadyExists;
+import ru.school21.intern.exception.NotActiveStatusObligation;
+import ru.school21.intern.exception.NotFindObligationById;
 import ru.school21.intern.domain.model.Category;
 import ru.school21.intern.domain.model.ObligationDto;
 import ru.school21.intern.domain.model.Recurrence;
 import ru.school21.intern.domain.model.Status;
 import ru.school21.intern.domain.repository.ObligationRepository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ObligationService {
@@ -33,10 +31,10 @@ public class ObligationService {
             obligationDto.setStatus(Status.EXPIRED);
         else
             obligationDto.setStatus(Status.ACTIVE);
-        obligationRepo.save(ObligationMapper.dtoToEntity(obligationDto));
+        ObligationDto newObligationDto = ObligationMapper.entityToDto(obligationRepo.save(ObligationMapper.dtoToEntity(obligationDto)));
         if (obligationRepo.findActiveByTitle(obligationDto.title().toLowerCase()).isPresent())
-            throw new ActiveObligationWithTitleAlreadyExists(obligationDto);
-        return obligationDto;
+            throw new ActiveObligationWithTitleAlreadyExists(newObligationDto);
+        return newObligationDto;
     }
 
     public List<ObligationDto> getAllObligation(Category category, Status status) {
@@ -70,14 +68,15 @@ public class ObligationService {
                 .toList();
     }
 
-    public List<ObligationDto> getObligationByNextPaymentToRange(int n) {
+    public List<ObligationDto> getObligationByNextPaymentToRange(Integer n) {
+        if (n == null) return getObligationByNextPaymentToRange();
         return getAllObligation(null, null).stream()
                 .filter(o -> (o.nextPaymentDate().after(new Date()))
                         && o.nextPaymentDate().before(new Date(new Date().getTime() + n * 24 * 60 * 60 * 1000L)))
                 .toList();
     }
 
-    public List<ObligationDto> getObligationByNextPaymentToRange() {
+    private List<ObligationDto> getObligationByNextPaymentToRange() {
         return getObligationByNextPaymentToRange(7);
     }
 
@@ -120,6 +119,27 @@ public class ObligationService {
 
     public void deleteObligation(UUID id) {
         obligationRepo.deleteById(id);
+    }
+
+    public Map<String, BigDecimal> calculateTotalAmountObligations() {
+        Map<String, BigDecimal> totals = new HashMap<>();
+        for (ObligationDto obligationDto : ObligationMapper.listEntityToListDto(obligationRepo.findAll())) {
+            if (totals.containsKey(obligationDto.currency().getCurrencyCode())) {
+                totals.computeIfPresent(
+                        obligationDto.currency().getCurrencyCode(), (k, curTotal) -> curTotal.add(obligationDto.amount())
+                );
+            } else {
+                totals.put(obligationDto.currency().getCurrencyCode(), BigDecimal.ZERO);
+            }
+        }
+        return totals;
+    }
+
+    public List<ObligationDto> getRenewalAlertByRange(Integer n) {
+        if (n == null) n = 7;
+        return getObligationByNextPaymentToRange(n).stream()
+                .filter(o -> (o.category().equals(Category.SUBSCRIPTION) && !o.recurrence().equals(Recurrence.NULL)))
+                .toList();
     }
 
     private void lazyExpiry() {
