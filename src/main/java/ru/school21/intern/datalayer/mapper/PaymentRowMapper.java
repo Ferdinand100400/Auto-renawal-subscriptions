@@ -1,7 +1,7 @@
 package ru.school21.intern.datalayer.mapper;
 
-import org.jspecify.annotations.Nullable;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.lang.Nullable;
 import ru.school21.intern.datalayer.entity.Payment;
 
 import java.sql.ResultSet;

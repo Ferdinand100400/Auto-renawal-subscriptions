@@ -1,9 +1,9 @@
-FROM openjdk:21-jdk-slim AS build
+FROM amazoncorretto:21 AS build
 
 WORKDIR /app
 
 # Копируем Gradle файлы
-COPY build.gradle settings.gradle ./
+COPY build.gradle.kts settings.gradle.kts ./
 COPY gradle gradle
 COPY gradlew .
 
@@ -15,7 +15,7 @@ RUN chmod +x gradlew
 RUN ./gradlew build --no-daemon
 
 # запуск
-FROM openjdk:21-jdk-slim
+FROM amazoncorretto:21
 
 WORKDIR /app
 

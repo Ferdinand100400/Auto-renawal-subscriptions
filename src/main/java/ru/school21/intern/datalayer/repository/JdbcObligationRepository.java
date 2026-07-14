@@ -3,6 +3,7 @@ package ru.school21.intern.datalayer.repository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 import ru.school21.intern.datalayer.entity.Obligation;
 import ru.school21.intern.datalayer.mapper.ObligationRowMapper;
 import ru.school21.intern.domain.repository.ObligationRepository;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Repository
 public class JdbcObligationRepository implements ObligationRepository {
 
     private final JdbcTemplate jdbcTemplate;

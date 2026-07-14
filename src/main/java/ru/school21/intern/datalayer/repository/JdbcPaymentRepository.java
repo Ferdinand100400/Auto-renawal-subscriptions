@@ -3,6 +3,7 @@ package ru.school21.intern.datalayer.repository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 import ru.school21.intern.datalayer.entity.Payment;
 import ru.school21.intern.datalayer.mapper.PaymentRowMapper;
 import ru.school21.intern.domain.repository.PaymentRepository;
@@ -13,6 +14,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
+@Repository
 public class JdbcPaymentRepository implements PaymentRepository {
 
     private final JdbcTemplate jdbcTemplate;
